@@ -6,9 +6,9 @@ public class World : MonoBehaviour
 {
     public Material terrainMaterial;
 
-    public static int worldSize = 4;
-    public static int chunkSize = 10;
-    public static int columnHeight = 10;
+    public static int worldSize = 50;
+    public static int chunkSize = 5;
+    public static int columnHeight = 1;
 
     public static Dictionary<Vector3, Chunk> chunkList;
 
