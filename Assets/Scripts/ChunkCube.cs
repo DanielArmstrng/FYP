@@ -30,12 +30,18 @@ public class ChunkCube : MonoBehaviour
 
     void GenerateCube()
     {
-        CreateCubeSide("front");
-        CreateCubeSide("back");
-        CreateCubeSide("top");
-        CreateCubeSide("bottom");
-        CreateCubeSide("left");
-        CreateCubeSide("right");
+        if(owner.CubeCheck(new Vector3(position.x, position.y, position.z + 1)) == false)  
+            CreateCubeSide("front");
+        if (owner.CubeCheck(new Vector3(position.x, position.y, position.z - 1)) == false)
+            CreateCubeSide("back");
+        if (owner.CubeCheck(new Vector3(position.x, position.y + 1, position.z)) == false)
+            CreateCubeSide("top");
+        if (owner.CubeCheck(new Vector3(position.x, position.y - 1, position.z)) == false)
+            CreateCubeSide("bottom");
+        if (owner.CubeCheck(new Vector3(position.x + 1, position.y, position.z)) == false)
+            CreateCubeSide("left");
+        if (owner.CubeCheck(new Vector3(position.x - 1, position.y, position.z)) == false)
+            CreateCubeSide("right");
     }
 
     void CreateCubeSide(string side)
