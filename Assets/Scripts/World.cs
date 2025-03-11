@@ -8,7 +8,7 @@ public class World : MonoBehaviour
 
     public static int worldSize = 10;
     public static int chunkSize = 10;
-    public static int columnHeight = 20;
+    public static int columnHeight = 10;
 
     public static Dictionary<Vector3, Chunk> chunkList;
 

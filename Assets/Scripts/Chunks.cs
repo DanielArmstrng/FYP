@@ -60,6 +60,7 @@ public class Chunk
 
         MeshFilter mf = chunkObject.AddComponent<MeshFilter>();
         MeshRenderer mr = chunkObject.AddComponent<MeshRenderer>();
+        MeshCollider mc = chunkObject.AddComponent<MeshCollider>();
 
         chunkMesh.vertices = vertices.ToArray();
         chunkMesh.triangles = triangles.ToArray();
@@ -70,6 +71,7 @@ public class Chunk
 
         mf.mesh = chunkMesh;
         mr.material = chunkMaterial;
+        mc.sharedMesh = chunkMesh;
     }
 
     void GenerateVirtualMap()
@@ -85,7 +87,7 @@ public class Chunk
                     }
                     else
                     {
-                        Blocks blockToCreate = BlockDB.GetBlockName("Dirt");
+                        Blocks blockToCreate = BlockDB.GetBlockName("Air");
                         chunkMap[x, y, z] = blockToCreate;
                     }
 
