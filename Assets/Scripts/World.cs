@@ -6,9 +6,9 @@ public class World : MonoBehaviour
 {
     public Material terrainMaterial;
 
-    public static int worldSize = 50;
-    public static int chunkSize = 5;
-    public static int columnHeight = 1;
+    public static int worldSize = 10;
+    public static int chunkSize = 10;
+    public static int columnHeight = 20;
 
     public static Dictionary<Vector3, Chunk> chunkList;
 
@@ -16,6 +16,8 @@ public class World : MonoBehaviour
     void Start()
     {
         chunkList = new Dictionary<Vector3, Chunk>();
+
+        GetComponent<BlockDB>().GenerateDB();
 
         for(int x = 0; x < worldSize * chunkSize; x += chunkSize)
             for(int z = 0; z < worldSize * chunkSize; z += chunkSize)
@@ -47,6 +49,30 @@ public class World : MonoBehaviour
         for (int y = 0; y < columnHeight * chunkSize; y += chunkSize)
         {
             GenerateChunk(new Vector3(x, y, z));
+        }
+    }
+
+    public static Chunk GetChunk(Vector3 pos)
+    {
+        float x = pos.x;
+        float y = pos.y;
+        float z = pos.z;
+
+        x = Mathf.FloorToInt(x / chunkSize) * chunkSize;
+        y = Mathf.FloorToInt(y / chunkSize) * chunkSize;
+        z = Mathf.FloorToInt(z / chunkSize) * chunkSize;
+
+        Vector3 chunkPos = new Vector3(x, y, z);
+
+        Chunk foundChunk;
+
+        if(chunkList.TryGetValue(chunkPos, out foundChunk))
+        {
+            return foundChunk;
+        }
+        else
+        {
+            return null;
         }
     }
 }

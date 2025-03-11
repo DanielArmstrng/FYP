@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class Noise : MonoBehaviour
 {
-    static int maxHeight = 150;
+    static int maxHeight = 100;
     static float smoothness = 0.01f;
     static int octaves = 4;
     static float persistence = 0.5f;
+    static int seed = Random.Range(0, 1000) * Random.Range(0, 1000);
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +30,7 @@ public class Noise : MonoBehaviour
 
     public static int GenerateHeight(float x, float z)
     {
-        float height = Map(FBM(x * smoothness, z * smoothness, octaves, persistence), 0, 1, 0, maxHeight);
+        float height = Map(FBM((x + seed) * smoothness, (z + seed) * smoothness, octaves, persistence), 0, 1, 0, maxHeight);
         return (int)height;
     }
 

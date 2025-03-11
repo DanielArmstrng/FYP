@@ -22,4 +22,19 @@ public class Blocks
     {
         
     }
+
+    public Blocks(string name, bool isSolid, bool isTransparent, Vector2 texture)
+    {
+        this.name = name;
+        this.isSolid = isSolid;
+        this.isTransparent = isTransparent;
+        this.texture = texture;
+    }
+
+    public Blocks()
+    {
+        name = "Air";
+        isSolid = false;
+        isTransparent = true;
+    }
 }

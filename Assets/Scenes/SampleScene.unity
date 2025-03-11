@@ -417,6 +417,7 @@ GameObject:
   - component: {fileID: 1912563007}
   - component: {fileID: 1912563006}
   - component: {fileID: 1912563009}
+  - component: {fileID: 1912563010}
   m_Layer: 0
   m_Name: Chunk Generator
   m_TagString: Untagged
@@ -502,3 +503,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrainMaterial: {fileID: 2100000, guid: 0e53e29c04f3a7c4fb07a2d200c330a0, type: 2}
+--- !u!114 &1912563010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912563004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d83d5c885bc7a040a96dc44f3ae3313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -7,6 +7,7 @@ public class ChunkCube : MonoBehaviour
 {
     public Chunk owner;
     public Vector3 position;
+    Blocks block;
 
     // Start is called before the first frame update
     void Start()
@@ -20,10 +21,11 @@ public class ChunkCube : MonoBehaviour
         
     }
 
-    public ChunkCube(Chunk own, Vector3 pos)
+    public ChunkCube(Chunk own, Vector3 pos, Blocks blocks)
     {
         owner = own;
         position = pos;
+        block = blocks;
 
         GenerateCube();
     }
