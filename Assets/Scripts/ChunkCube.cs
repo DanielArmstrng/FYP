@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class ChunkCube : MonoBehaviour
+public class ChunkCube
 {
     public Chunk owner;
     public Vector3 position;

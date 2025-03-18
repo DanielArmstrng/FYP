@@ -44,6 +44,7 @@ public class Chunk
         chunkObject.transform.position = position;
         chunkMaterial = material;
 
+
         MakeChunk();
     }
 
@@ -72,6 +73,9 @@ public class Chunk
         mf.mesh = chunkMesh;
         mr.material = chunkMaterial;
         mc.sharedMesh = chunkMesh;
+
+        mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        mr.receiveShadows = false;
     }
 
     void GenerateVirtualMap()
