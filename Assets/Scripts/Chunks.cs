@@ -95,7 +95,7 @@ public class Chunk
                     int offset = 5 * World.chunkSize;
 
                     int worldX = (int)(chunkObject.transform.position.x + x);
-                    int worldY = (int)(chunkObject.transform.position.y + y);
+                    int worldY = (int)(chunkObject.transform.position.y + (y + offset));
                     int worldZ = (int)(chunkObject.transform.position.z + z);
 
                     if (worldY < Noise.GenerateHeight(worldX, worldZ))
@@ -108,7 +108,7 @@ public class Chunk
                         Blocks airBlock = BlockDB.GetBlockName("Air");
                         chunkMap[x, y, z] = airBlock;
                     }
-                        
+
                 }
 
         //GenerateBlocksMap();
@@ -122,7 +122,10 @@ public class Chunk
                 {
                     if (chunkMap[x, y, z] != BlockDB.GetBlockName("Air"))
                     {
-                        ChunkCube newCube = new ChunkCube(this, new Vector3(x, y, z), chunkMap[x, y, z]);
+                        if (!IsFullySurrounded(new Vector3(x, y, z)))
+                        {
+                            ChunkCube newCube = new ChunkCube(this, new Vector3(x, y, z), chunkMap[x, y, z]);
+                        }
                     }
                 }
 
@@ -154,6 +157,16 @@ public class Chunk
 
         else             
             return true;
+    }
+
+    private bool IsFullySurrounded(Vector3 pos)
+    {
+        return CubeCheck(new Vector3(pos.x, pos.y, pos.z + 1)) &&
+               CubeCheck(new Vector3(pos.x, pos.y, pos.z - 1)) &&
+               CubeCheck(new Vector3(pos.x, pos.y + 1, pos.z)) &&
+               CubeCheck(new Vector3(pos.x, pos.y - 1, pos.z)) &&
+               CubeCheck(new Vector3(pos.x + 1, pos.y, pos.z)) &&
+               CubeCheck(new Vector3(pos.x - 1, pos.y, pos.z));
     }
 
     int ConvertIndexToLocal(int i)

@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Noise : MonoBehaviour
 {
-    static int maxHeight = 100;
-    static float smoothness = 0.01f;
+    static int maxHeight = 150;
+    static float smoothness = 0.007f;
     static int octaves = 4;
-    static float persistence = 0.5f;
+    static float persistence = 0.3f;
     static int seed = Random.Range(0, 1000) * Random.Range(0, 1000);
 
     // Start is called before the first frame update
