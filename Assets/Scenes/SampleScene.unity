@@ -576,6 +576,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terrainMaterial: {fileID: 2100000, guid: 0e53e29c04f3a7c4fb07a2d200c330a0, type: 2}
   player: {fileID: 734507829}
-  viewDistance: 8
+  viewDistance: 16
   generationThrottleSeconds: 0.01
   isGenerating: 0
