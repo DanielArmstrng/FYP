@@ -74,8 +74,8 @@ public class Chunk
         mr.material = chunkMaterial;
         mc.sharedMesh = chunkMesh;
 
-        mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        mr.receiveShadows = false;
+        //mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        //mr.receiveShadows = false;
     }
 
     void GenerateVirtualMap()
@@ -219,12 +219,12 @@ public class Chunk
             }
             else
             {
-                // If we're checking above the chunk, treat it as air
+                // If checking above the chunk treat it as air
                 if (y >= World.chunkSize)
                 {
                     return false;
                 }
-                // For other missing neighbors, treat as solid
+                // For other missing neighbors treat as solid
                 return true;
             }
         }
