@@ -27,162 +27,148 @@ public class ChunkCube
         this.position = position;
         this.block = blockType;
 
-        // Only create the faces that are marked as visible
-        if (visibleFaces[0]) CreateFront(owner, position, blockType);
-        if (visibleFaces[1]) CreateBack(owner, position, blockType);
-        if (visibleFaces[2]) CreateTop(owner, position, blockType);
-        if (visibleFaces[3]) CreateBottom(owner, position, blockType);
-        if (visibleFaces[4]) CreateRight(owner, position, blockType);
-        if (visibleFaces[5]) CreateLeft(owner, position, blockType);
+        // Order: front, back, top, bottom, right, left
+        for (int i = 0; i < visibleFaces.Length; i++)
+        {
+            if (visibleFaces[i])
+            {
+                CreateCubeSide(owner, position, blockType, (CubeSide)i);
+            }
+        }
     }
 
-    void CreateFront(Chunk owner, Vector3 position, Blocks blockType)
+    private enum CubeSide
     {
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(1 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
-        owner.triangles.Add(3 + owner.vertices.Count);
+        Front,
+        Back,
+        Top,
+        Bottom,
+        Right,
+        Left
+    }
 
-        Vector3 v0 = new Vector3(0.5f, -0.5f, 0.5f);
-        Vector3 v1 = new Vector3(0.5f, 0.5f, 0.5f);
-        Vector3 v2 = new Vector3(-0.5f, 0.5f, 0.5f);
-        Vector3 v3 = new Vector3(-0.5f, -0.5f, 0.5f);
+    void CreateCubeSide(Chunk owner, Vector3 position, Blocks blockType, CubeSide side)
+    {
+        // Add triangles based on side
+        if (side == CubeSide.Back || side == CubeSide.Bottom || side == CubeSide.Left)
+        {
+            owner.triangles.Add(0 + owner.vertices.Count);
+            owner.triangles.Add(2 + owner.vertices.Count);
+            owner.triangles.Add(1 + owner.vertices.Count);
+            owner.triangles.Add(0 + owner.vertices.Count);
+            owner.triangles.Add(3 + owner.vertices.Count);
+            owner.triangles.Add(2 + owner.vertices.Count);
+        }
+        else
+        {
+            owner.triangles.Add(0 + owner.vertices.Count);
+            owner.triangles.Add(1 + owner.vertices.Count);
+            owner.triangles.Add(2 + owner.vertices.Count);
+            owner.triangles.Add(0 + owner.vertices.Count);
+            owner.triangles.Add(2 + owner.vertices.Count);
+            owner.triangles.Add(3 + owner.vertices.Count);
+        }
+
+        Vector3 v0, v1, v2, v3;
+        Vector2 uv0, uv1, uv2, uv3;
+
+        switch (side)
+        {
+            case CubeSide.Front:
+                v0 = new Vector3(0.5f, -0.5f, 0.5f);
+                v1 = new Vector3(0.5f, 0.5f, 0.5f);
+                v2 = new Vector3(-0.5f, 0.5f, 0.5f);
+                v3 = new Vector3(-0.5f, -0.5f, 0.5f);
+                //uv0 = new Vector2(1, 0);
+                //uv1 = new Vector2(1, 1);
+                //uv2 = new Vector2(0, 1);
+                //uv3 = new Vector2(0, 0);
+                break;
+
+            case CubeSide.Back:
+                v0 = new Vector3(0.5f, -0.5f, -0.5f);
+                v1 = new Vector3(0.5f, 0.5f, -0.5f);
+                v2 = new Vector3(-0.5f, 0.5f, -0.5f);
+                v3 = new Vector3(-0.5f, -0.5f, -0.5f);
+                //uv0 = new Vector2(0, 0);
+                //uv1 = new Vector2(0, 1);
+                //uv2 = new Vector2(1, 1);
+                //uv3 = new Vector2(1, 0);
+                break;
+
+            case CubeSide.Top:
+                v0 = new Vector3(0.5f, 0.5f, 0.5f);
+                v1 = new Vector3(0.5f, 0.5f, -0.5f);
+                v2 = new Vector3(-0.5f, 0.5f, -0.5f);
+                v3 = new Vector3(-0.5f, 0.5f, 0.5f);
+                //uv0 = new Vector2(1, 1);
+                //uv1 = new Vector2(1, 0);
+                //uv2 = new Vector2(0, 0);
+                //uv3 = new Vector2(0, 1);
+                break;
+
+            case CubeSide.Bottom:
+                v0 = new Vector3(0.5f, -0.5f, 0.5f);
+                v1 = new Vector3(0.5f, -0.5f, -0.5f);
+                v2 = new Vector3(-0.5f, -0.5f, -0.5f);
+                v3 = new Vector3(-0.5f, -0.5f, 0.5f);
+                //uv0 = new Vector2(1, 1);
+                //uv1 = new Vector2(1, 0);
+                //uv2 = new Vector2(0, 0);
+                //uv3 = new Vector2(0, 1);
+                break;
+
+            case CubeSide.Right:
+                v0 = new Vector3(0.5f, -0.5f, -0.5f);
+                v1 = new Vector3(0.5f, 0.5f, -0.5f);
+                v2 = new Vector3(0.5f, 0.5f, 0.5f);
+                v3 = new Vector3(0.5f, -0.5f, 0.5f);
+                //uv0 = new Vector2(1, 0);
+                //uv1 = new Vector2(1, 1);
+                //uv2 = new Vector2(0, 1);
+                //uv3 = new Vector2(0, 0);
+                break;
+
+            case CubeSide.Left:
+                v0 = new Vector3(-0.5f, -0.5f, -0.5f);
+                v1 = new Vector3(-0.5f, 0.5f, -0.5f);
+                v2 = new Vector3(-0.5f, 0.5f, 0.5f);
+                v3 = new Vector3(-0.5f, -0.5f, 0.5f);
+                //uv0 = new Vector2(0, 0);
+                //uv1 = new Vector2(0, 1);
+                //uv2 = new Vector2(1, 1);
+                //uv3 = new Vector2(1, 0);
+                break;
+
+            default:
+                throw new System.ArgumentException("Invalid cube side");
+        }
 
         owner.vertices.Add(v0 + position);
         owner.vertices.Add(v1 + position);
         owner.vertices.Add(v2 + position);
         owner.vertices.Add(v3 + position);
 
-        owner.UVs.Add(new Vector2(1, 0));
-        owner.UVs.Add(new Vector2(1, 1));
-        owner.UVs.Add(new Vector2(0, 1));
-        owner.UVs.Add(new Vector2(0, 0));
-    }
+        float textureOffset = 1f / 2f;
+        Vector2 texturePos;
 
-    void CreateBack(Chunk owner, Vector3 position, Blocks blockType)
-    {
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
-        owner.triangles.Add(1 + owner.vertices.Count);
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(3 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
+        if(block.multiTexture)
+        {
+            if (side == CubeSide.Top)
+                texturePos = block.textureUp;
+            else if (side == CubeSide.Bottom)
+                texturePos = block.textureDown;
+            else
+                texturePos = block.textureSide;
+        }
+        else
+        {
+            texturePos = block.texture;
+        }
 
-        Vector3 v0 = new Vector3(0.5f, -0.5f, -0.5f);
-        Vector3 v1 = new Vector3(0.5f, 0.5f, -0.5f);
-        Vector3 v2 = new Vector3(-0.5f, 0.5f, -0.5f);
-        Vector3 v3 = new Vector3(-0.5f, -0.5f, -0.5f);
-
-        owner.vertices.Add(v0 + position);
-        owner.vertices.Add(v1 + position);
-        owner.vertices.Add(v2 + position);
-        owner.vertices.Add(v3 + position);
-
-        owner.UVs.Add(new Vector2(0, 0));
-        owner.UVs.Add(new Vector2(0, 1));
-        owner.UVs.Add(new Vector2(1, 1));
-        owner.UVs.Add(new Vector2(1, 0));
-    }
-
-    void CreateTop(Chunk owner, Vector3 position, Blocks blockType)
-    {
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(1 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
-        owner.triangles.Add(3 + owner.vertices.Count);
-
-        Vector3 v0 = new Vector3(0.5f, 0.5f, 0.5f);
-        Vector3 v1 = new Vector3(0.5f, 0.5f, -0.5f);
-        Vector3 v2 = new Vector3(-0.5f, 0.5f, -0.5f);
-        Vector3 v3 = new Vector3(-0.5f, 0.5f, 0.5f);
-
-        owner.vertices.Add(v0 + position);
-        owner.vertices.Add(v1 + position);
-        owner.vertices.Add(v2 + position);
-        owner.vertices.Add(v3 + position);
-
-        owner.UVs.Add(new Vector2(1, 1));
-        owner.UVs.Add(new Vector2(1, 0));
-        owner.UVs.Add(new Vector2(0, 0));
-        owner.UVs.Add(new Vector2(0, 1));
-    }
-
-    void CreateBottom(Chunk owner, Vector3 position, Blocks blockType)
-    {
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
-        owner.triangles.Add(1 + owner.vertices.Count);
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(3 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
-
-        Vector3 v0 = new Vector3(0.5f, -0.5f, 0.5f);
-        Vector3 v1 = new Vector3(0.5f, -0.5f, -0.5f);
-        Vector3 v2 = new Vector3(-0.5f, -0.5f, -0.5f);
-        Vector3 v3 = new Vector3(-0.5f, -0.5f, 0.5f);
-
-        owner.vertices.Add(v0 + position);
-        owner.vertices.Add(v1 + position);
-        owner.vertices.Add(v2 + position);
-        owner.vertices.Add(v3 + position);
-
-        owner.UVs.Add(new Vector2(1, 1));
-        owner.UVs.Add(new Vector2(1, 0));
-        owner.UVs.Add(new Vector2(0, 0));
-        owner.UVs.Add(new Vector2(0, 1));
-    }
-
-    void CreateRight(Chunk owner, Vector3 position, Blocks blockType)
-    {
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(1 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
-        owner.triangles.Add(3 + owner.vertices.Count);
-
-        Vector3 v0 = new Vector3(0.5f, -0.5f, -0.5f);
-        Vector3 v1 = new Vector3(0.5f, 0.5f, -0.5f);
-        Vector3 v2 = new Vector3(0.5f, 0.5f, 0.5f);
-        Vector3 v3 = new Vector3(0.5f, -0.5f, 0.5f);
-
-        owner.vertices.Add(v0 + position);
-        owner.vertices.Add(v1 + position);
-        owner.vertices.Add(v2 + position);
-        owner.vertices.Add(v3 + position);
-
-        owner.UVs.Add(new Vector2(1, 0));
-        owner.UVs.Add(new Vector2(1, 1));
-        owner.UVs.Add(new Vector2(0, 1));
-        owner.UVs.Add(new Vector2(0, 0));
-    }
-
-    void CreateLeft(Chunk owner, Vector3 position, Blocks blockType)
-    {
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
-        owner.triangles.Add(1 + owner.vertices.Count);
-        owner.triangles.Add(0 + owner.vertices.Count);
-        owner.triangles.Add(3 + owner.vertices.Count);
-        owner.triangles.Add(2 + owner.vertices.Count);
-
-        Vector3 v0 = new Vector3(-0.5f, -0.5f, -0.5f);
-        Vector3 v1 = new Vector3(-0.5f, 0.5f, -0.5f);
-        Vector3 v2 = new Vector3(-0.5f, 0.5f, 0.5f);
-        Vector3 v3 = new Vector3(-0.5f, -0.5f, 0.5f);
-
-        owner.vertices.Add(v0 + position);
-        owner.vertices.Add(v1 + position);
-        owner.vertices.Add(v2 + position);
-        owner.vertices.Add(v3 + position);
-
-        owner.UVs.Add(new Vector2(0, 0));
-        owner.UVs.Add(new Vector2(0, 1));
-        owner.UVs.Add(new Vector2(1, 1));
-        owner.UVs.Add(new Vector2(1, 0));
+        owner.UVs.Add(new Vector2((textureOffset * texturePos.x) + textureOffset, textureOffset * texturePos.y));
+        owner.UVs.Add(new Vector2((textureOffset * texturePos.x) + textureOffset, (textureOffset * texturePos.y) + textureOffset));
+        owner.UVs.Add(new Vector2(textureOffset * texturePos.x, (textureOffset * texturePos.y) + textureOffset));
+        owner.UVs.Add(new Vector2(textureOffset * texturePos.x, textureOffset * texturePos.y));
     }
 }

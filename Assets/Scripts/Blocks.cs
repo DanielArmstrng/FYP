@@ -10,6 +10,11 @@ public class Blocks
     public bool isTransparent;
 
     public Vector2 texture;
+    public Vector2 textureUp;
+    public Vector2 textureDown;
+    public Vector2 textureSide;
+
+    public bool multiTexture;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +34,18 @@ public class Blocks
         this.isSolid = isSolid;
         this.isTransparent = isTransparent;
         this.texture = texture;
+    }
+
+    public Blocks(string name, bool isSolid, bool isTransparent, Vector2 textureUp, Vector2 textureDown, Vector2 textureSide)
+    {
+        this.name = name;
+        this.isSolid = isSolid;
+        this.isTransparent = isTransparent;
+        this.textureUp = textureUp;
+        this.textureDown = textureDown;
+        this.textureSide = textureSide;
+
+        multiTexture = true;
     }
 
     public Blocks()

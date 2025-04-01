@@ -34,6 +34,12 @@ public class Noise : MonoBehaviour
         return (int)height;
     }
 
+    public static int GenerateStoneHeight(float x, float z)
+    {
+        float height = Map(FBM((x + seed) * smoothness, (z + seed) * smoothness, octaves, persistence), 0, 1, 0, maxHeight);
+        return (int)height - 10;
+    }
+
     static float FBM(float x, float z, int octaves, float persistence)
     {
         float total = 0;

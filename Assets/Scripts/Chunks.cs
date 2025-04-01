@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Chunk
 {
-    Blocks[,,] chunkMap;
+    public Blocks[,,] chunkMap;
 
     public List<Vector3> vertices = new List<Vector3>();
     public List<int> triangles = new List<int>();
@@ -14,7 +14,7 @@ public class Chunk
     //public static int chunkSize = 10;
 
     Mesh chunkMesh;
-    GameObject chunkObject;
+    public GameObject chunkObject;
     public Material chunkMaterial;
 
     // Start is called before the first frame update
@@ -55,7 +55,7 @@ public class Chunk
         GenerateVirtualMap();
     }
 
-    void GeneratePhysicalChunk()
+    public void GeneratePhysicalChunk()
     {
         chunkMesh = new Mesh();
 
@@ -84,35 +84,47 @@ public class Chunk
             for (int y = 0; y < World.chunkSize; y++)
                 for (int z = 0; z < World.chunkSize; z++)
                 {
-                    if (y == World.chunkSize - 1)
-                    {
-                        Blocks blockToCreate = BlockDB.GetBlockName("Dirt");
-                        chunkMap[x, y, z] = blockToCreate;
-                    }
-                    else
-                    {
-                        Blocks blockToCreate = BlockDB.GetBlockName("Air");
-                        chunkMap[x, y, z] = blockToCreate;
-                    }
+                    //if (y == World.chunkSize - 1)
+                    //{
+                    //    Blocks blockToCreate = BlockDB.GetBlockName("Grass");
+                    //    chunkMap[x, y, z] = blockToCreate;
+                    //}
+                    //else
+                    //{
+                    //    Blocks blockToCreate = BlockDB.GetBlockName("Dirt");
+                    //    chunkMap[x, y, z] = blockToCreate;
+                    //}
 
 
-                    int offset = 5 * World.chunkSize;
+                    int offset = 2 * World.chunkSize;
 
                     int worldX = (int)(chunkObject.transform.position.x + x);
                     int worldY = (int)(chunkObject.transform.position.y + (y + offset));
                     int worldZ = (int)(chunkObject.transform.position.z + z);
+
+                    //if (worldY <= Noise.GenerateStoneHeight(worldX, worldZ))
+                    //{
+                    //    Blocks stoneBlock = BlockDB.GetBlockName("Stone");
+                    //    chunkMap[x, y, z] = stoneBlock;
+                    //}
 
                     if (worldY < Noise.GenerateHeight(worldX, worldZ))
                     {
                         Blocks dirtBlock = BlockDB.GetBlockName("Dirt");
                         chunkMap[x, y, z] = dirtBlock;
                     }
+
+                    else if (worldY == Noise.GenerateHeight(worldX, worldZ))
+                    {
+                        Blocks grassBlock = BlockDB.GetBlockName("Grass");
+                        chunkMap[x, y, z] = grassBlock;
+                    }
+
                     else
                     {
                         Blocks airBlock = BlockDB.GetBlockName("Air");
                         chunkMap[x, y, z] = airBlock;
                     }
-
                 }
 
         //GenerateBlocksMap();
@@ -232,6 +244,13 @@ public class Chunk
         {
             return chunkMap[x, y, z] == BlockDB.GetBlockName("Dirt");
         }
+    }
+
+    public void ClearChunk()
+    {
+        vertices.Clear();
+        triangles.Clear();
+        UVs.Clear();
     }
 
     //private bool IsFullySurrounded(Vector3 pos)

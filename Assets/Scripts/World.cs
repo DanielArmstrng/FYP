@@ -243,4 +243,51 @@ public class World : MonoBehaviour
             return null;
         }
     }
+
+    public static Chunk FindNeighbour(Chunk actualChunk, string side)
+    {
+        Vector3 actualPos = actualChunk.chunkObject.transform.position;
+
+        if(side == "front")
+        {
+            return GetChunk(new Vector3(actualPos.x, actualPos.y, actualPos.z + chunkSize));
+        }
+        else if (side == "back")
+        {
+            return GetChunk(new Vector3(actualPos.x, actualPos.y, actualPos.z - 1));
+        }
+        else if (side == "left")
+        {
+            return GetChunk(new Vector3(actualPos.x - 1, actualPos.y, actualPos.z));
+        }
+        else if (side == "right")
+        {
+            return GetChunk(new Vector3(actualPos.x + chunkSize, actualPos.y, actualPos.z));
+        }
+        else if (side == "top")
+        {
+            return GetChunk(new Vector3(actualPos.x, actualPos.y + chunkSize, actualPos.z));
+        }
+        else if (side == "bottom")
+        {
+            return GetChunk(new Vector3(actualPos.x, actualPos.y - 1, actualPos.z));
+        }
+
+        return null;
+    }
+
+    public static Vector3 GetBlockPosition(Vector3 position)
+    {
+        int x = (int)position.x;
+        int y = (int)position.y;
+        int z = (int)position.z;
+
+        Chunk chunkAtPos = GetChunk(position);
+
+        int blockPosX = x - (int)chunkAtPos.chunkObject.transform.position.x;
+        int blockPosY = y - (int)chunkAtPos.chunkObject.transform.position.y;
+        int blockPosZ = z - (int)chunkAtPos.chunkObject.transform.position.z;
+
+        return new Vector3(blockPosX, blockPosY, blockPosZ);
+    }
 }

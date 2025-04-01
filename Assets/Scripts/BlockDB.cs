@@ -16,6 +16,8 @@ public class BlockDB : MonoBehaviour
     {
         blocksList.Add(new Blocks());
         blocksList.Add(new Blocks("Dirt", true, false, new Vector2(0, 0)));
+        blocksList.Add(new Blocks("Grass", true, false, new Vector2(1, 0), new Vector2(0, 0), new Vector2(1, 1)));
+        blocksList.Add(new Blocks("Stone", true, false, new Vector2(0, 1)));
     }
 
     // Update is called once per frame
