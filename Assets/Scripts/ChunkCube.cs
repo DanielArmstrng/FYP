@@ -70,7 +70,7 @@ public class ChunkCube
         }
 
         Vector3 v0, v1, v2, v3;
-        Vector2 uv0, uv1, uv2, uv3;
+        //Vector2 uv0, uv1, uv2, uv3;
 
         switch (side)
         {

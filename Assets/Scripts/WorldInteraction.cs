@@ -27,20 +27,23 @@ public class WorldInteraction : MonoBehaviour
             playerBodyPos = new Vector3(Mathf.Round(playerPos.x), Mathf.Round(playerPos.y), Mathf.Round(playerPos.z));
 
             Vector3 hitBlock;
-            hitBlock = hit.point - hit.normal / 2.0f;
+            hitBlock = hit.point - hit.normal / 2;
 
             Vector3 placeBlock;
-            placeBlock = hit.point + hit.normal / 2.0f;
+            placeBlock = hit.point + hit.normal / 2;
 
-            hitBlock.x = (int)Mathf.Floor(hitBlock.x);
-            hitBlock.y = (int)Mathf.Floor(hitBlock.y);
-            hitBlock.z = (int)Mathf.Floor(hitBlock.z);
+            hitBlock.x = (int)Mathf.Round(hitBlock.x);
+            hitBlock.y = (int)Mathf.Round(hitBlock.y);
+            hitBlock.z = (int)Mathf.Round(hitBlock.z);
 
-            placeBlock.x = (int)Mathf.Floor(placeBlock.x);
-            placeBlock.y = (int)Mathf.Floor(placeBlock.y);
-            placeBlock.z = (int)Mathf.Floor(placeBlock.z);
+            placeBlock.x = (int)Mathf.Round(placeBlock.x);
+            placeBlock.y = (int)Mathf.Round(placeBlock.y);
+            placeBlock.z = (int)Mathf.Round(placeBlock.z);
 
             target.transform.position = hitBlock;
+
+            Debug.DrawLine(Camera.main.transform.position, hitBlock, Color.red, Mathf.Infinity);
+            Debug.DrawLine(Camera.main.transform.position, hit.point, Color.green, Mathf.Infinity);
 
             Interaction(hit, hitBlock, placeBlock);
         }

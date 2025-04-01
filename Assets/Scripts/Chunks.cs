@@ -96,7 +96,7 @@ public class Chunk
                     //}
 
 
-                    int offset = 2 * World.chunkSize;
+                    int offset = 5 * World.chunkSize;
 
                     int worldX = (int)(chunkObject.transform.position.x + x);
                     int worldY = (int)(chunkObject.transform.position.y + (y + offset));
