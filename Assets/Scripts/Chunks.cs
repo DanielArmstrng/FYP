@@ -158,6 +158,21 @@ public class Chunk
         int y = (int)pos.y;
         int z = (int)pos.z;
 
+        int offset = 5 * World.chunkSize;
+        int worldX = (int)(chunkObject.transform.position.x + x);
+        int worldY = (int)(chunkObject.transform.position.y + (y + offset));
+        int worldZ = (int)(chunkObject.transform.position.z + z);
+
+        // If the block is at the top of the chunk, make all faces visible
+        if (worldY == Noise.GenerateHeight(worldX, worldZ))
+        {
+            for (int i = 0; i < visibleFaces.Length; i++)
+            {
+                visibleFaces[i] = true;
+            }
+            return visibleFaces;
+        }
+
         // Check each face
         visibleFaces[0] = !CubeCheck(new Vector3(x, y, z + 1)); // front
         visibleFaces[1] = !CubeCheck(new Vector3(x, y, z - 1)); // back
