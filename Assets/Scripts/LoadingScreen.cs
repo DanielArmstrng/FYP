@@ -17,8 +17,8 @@ public class LoadingScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Invoke(nameof(EnableMovement), 7.0f);
-        Destroy(gameObject, 11.0f);
+        Invoke(nameof(EnableMovement), 20.0f);
+        Destroy(gameObject, 21.0f);
     }
 
     void EnableMovement()

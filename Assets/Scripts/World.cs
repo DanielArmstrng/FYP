@@ -87,8 +87,8 @@ public class World : MonoBehaviour
     public int viewDistance = 3; 
 
     public static int worldSize = 10;
-    public static int chunkSize = 10;
-    public static int columnHeight = 5;
+    public static int chunkSize = 6;
+    public static int columnHeight = 20;
 
     public static Dictionary<Vector3, Chunk> chunkList;
     private Vector3 lastCheckedPosition;

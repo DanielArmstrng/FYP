@@ -42,8 +42,8 @@ public class WorldInteraction : MonoBehaviour
 
             target.transform.position = hitBlock;
 
-            Debug.DrawLine(Camera.main.transform.position, hitBlock, Color.red, Mathf.Infinity);
-            Debug.DrawLine(Camera.main.transform.position, hit.point, Color.green, Mathf.Infinity);
+            //Debug.DrawLine(Camera.main.transform.position, hitBlock, Color.red, Mathf.Infinity);
+            //Debug.DrawLine(Camera.main.transform.position, hit.point, Color.green, Mathf.Infinity);
 
             Interaction(hit, hitBlock, placeBlock);
         }

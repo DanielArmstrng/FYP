@@ -96,19 +96,20 @@ public class Chunk
                     //}
 
 
-                    int offset = 5 * World.chunkSize;
+                    int offset = 2 * World.chunkSize;
 
                     int worldX = (int)(chunkObject.transform.position.x + x);
                     int worldY = (int)(chunkObject.transform.position.y + (y + offset));
+                    //int worldY = (int)(chunkObject.transform.position.y + y);
                     int worldZ = (int)(chunkObject.transform.position.z + z);
 
-                    //if (worldY <= Noise.GenerateStoneHeight(worldX, worldZ))
-                    //{
-                    //    Blocks stoneBlock = BlockDB.GetBlockName("Stone");
-                    //    chunkMap[x, y, z] = stoneBlock;
-                    //}
+                    if (worldY <= Noise.GenerateStoneHeight(worldX, worldZ))
+                    {
+                        Blocks stoneBlock = BlockDB.GetBlockName("Stone");
+                        chunkMap[x, y, z] = stoneBlock;
+                    }
 
-                    if (worldY < Noise.GenerateHeight(worldX, worldZ))
+                    else if (worldY < Noise.GenerateHeight(worldX, worldZ))
                     {
                         Blocks dirtBlock = BlockDB.GetBlockName("Dirt");
                         chunkMap[x, y, z] = dirtBlock;
@@ -158,13 +159,14 @@ public class Chunk
         int y = (int)pos.y;
         int z = (int)pos.z;
 
-        int offset = 5 * World.chunkSize;
+        int offset = 2 * World.chunkSize;
         int worldX = (int)(chunkObject.transform.position.x + x);
         int worldY = (int)(chunkObject.transform.position.y + (y + offset));
+        //int worldY = (int)(chunkObject.transform.position.y + y);
         int worldZ = (int)(chunkObject.transform.position.z + z);
 
         // If the block is at the top of the chunk, make all faces visible
-        if (worldY == Noise.GenerateHeight(worldX, worldZ))
+        if (worldY == Noise.GenerateHeight(worldX, worldZ) || worldY == Noise.GenerateHeight(worldX, worldZ) - 1)
         {
             for (int i = 0; i < visibleFaces.Length; i++)
             {
@@ -242,7 +244,8 @@ public class Chunk
 
             if (neighbourChunk != null)
             {
-                return neighbourChunk.chunkMap[(int)checkPos.x, (int)checkPos.y, (int)checkPos.z] == BlockDB.GetBlockName("Dirt");
+                Blocks block = neighbourChunk.chunkMap[(int)checkPos.x, (int)checkPos.y, (int)checkPos.z];
+                return block == BlockDB.GetBlockName("Dirt") || block == BlockDB.GetBlockName("Stone");
             }
             else
             {
@@ -257,7 +260,8 @@ public class Chunk
         }
         else
         {
-            return chunkMap[x, y, z] == BlockDB.GetBlockName("Dirt");
+            Blocks block = chunkMap[x, y, z];
+            return block == BlockDB.GetBlockName("Dirt") || block == BlockDB.GetBlockName("Stone");
         }
     }
 
