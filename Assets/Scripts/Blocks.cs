@@ -8,6 +8,7 @@ public class Blocks
 
     public bool isSolid;
     public bool isTransparent;
+    public bool isBreakable;
 
     public Vector2 texture;
     public Vector2 textureUp;
@@ -28,19 +29,21 @@ public class Blocks
         
     }
 
-    public Blocks(string name, bool isSolid, bool isTransparent, Vector2 texture)
+    public Blocks(string name, bool isSolid, bool isTransparent, bool isBreakable, Vector2 texture)
     {
         this.name = name;
         this.isSolid = isSolid;
         this.isTransparent = isTransparent;
+        this.isBreakable = isBreakable;
         this.texture = texture;
     }
 
-    public Blocks(string name, bool isSolid, bool isTransparent, Vector2 textureUp, Vector2 textureDown, Vector2 textureSide)
+    public Blocks(string name, bool isSolid, bool isTransparent, bool isBreakable, Vector2 textureUp, Vector2 textureDown, Vector2 textureSide)
     {
         this.name = name;
         this.isSolid = isSolid;
         this.isTransparent = isTransparent;
+        this.isBreakable = isBreakable;
         this.textureUp = textureUp;
         this.textureDown = textureDown;
         this.textureSide = textureSide;

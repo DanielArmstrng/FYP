@@ -55,22 +55,29 @@ public class WorldInteraction : MonoBehaviour
 
     void Interaction(RaycastHit hit, Vector3 hitPosition, Vector3 placePosition)
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0)) //Destroy blocks
         {
             Vector3 chunkBlockPosition = hitPosition - hit.collider.gameObject.transform.position;
             
             Chunk chunkAtPosition = World.GetChunk(hit.collider.transform.position);
+            
+            // Get the block at the hit position
+            Blocks blockAtPosition = chunkAtPosition.chunkMap[(int)chunkBlockPosition.x, (int)chunkBlockPosition.y, (int)chunkBlockPosition.z];
+            
+            // Only destroy the block if it's breakable
+            if (blockAtPosition.isBreakable)
+            {
+                ClearChunk(chunkAtPosition);
 
-            ClearChunk(chunkAtPosition);
+                chunkAtPosition.chunkMap[(int)chunkBlockPosition.x, (int)chunkBlockPosition.y, (int)chunkBlockPosition.z] = BlockDB.GetBlockName("Air");
+            
+                chunkAtPosition.GenerateBlocksMap();
 
-            chunkAtPosition.chunkMap[(int)chunkBlockPosition.x, (int)chunkBlockPosition.y, (int)chunkBlockPosition.z] = BlockDB.GetBlockName("Air");
-        
-            chunkAtPosition.GenerateBlocksMap();
-
-            UpdateNeighbours(chunkBlockPosition, chunkAtPosition);
+                UpdateNeighbours(chunkBlockPosition, chunkAtPosition);
+            }
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1)) //Place blocks
         {
             if (placePosition != playerHeadPos && placePosition != playerBodyPos)
             {
@@ -137,6 +144,4 @@ public class WorldInteraction : MonoBehaviour
             neighbour.GenerateBlocksMap();
         }
     }
-
-
 }

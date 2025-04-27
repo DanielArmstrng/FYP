@@ -126,6 +126,12 @@ public class Chunk
                         Blocks airBlock = BlockDB.GetBlockName("Air");
                         chunkMap[x, y, z] = airBlock;
                     }
+
+                    if (worldY - offset == 0)
+                    {
+                        Blocks bedrockBlock = BlockDB.GetBlockName("Bedrock");
+                        chunkMap[x, y, z] = bedrockBlock;
+                    }
                 }
 
         //GenerateBlocksMap();
@@ -245,7 +251,7 @@ public class Chunk
             if (neighbourChunk != null)
             {
                 Blocks block = neighbourChunk.chunkMap[(int)checkPos.x, (int)checkPos.y, (int)checkPos.z];
-                return block == BlockDB.GetBlockName("Dirt") || block == BlockDB.GetBlockName("Stone");
+                return block == BlockDB.GetBlockName("Dirt") || block == BlockDB.GetBlockName("Stone") || block == BlockDB.GetBlockName("Bedrock");
             }
             else
             {
@@ -261,7 +267,7 @@ public class Chunk
         else
         {
             Blocks block = chunkMap[x, y, z];
-            return block == BlockDB.GetBlockName("Dirt") || block == BlockDB.GetBlockName("Stone");
+            return block == BlockDB.GetBlockName("Dirt") || block == BlockDB.GetBlockName("Stone") || block == BlockDB.GetBlockName("Bedrock");
         }
     }
 
