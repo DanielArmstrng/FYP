@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Overlays;
 using UnityEngine;
 
 
 public class Chunk
 {
+    //3D array stores all blocks in the chunk
     public Blocks[,,] chunkMap;
 
     public List<Vector3> vertices = new List<Vector3>();
     public List<int> triangles = new List<int>();
     public List<Vector2> UVs = new List<Vector2>();
-
-    //public static int chunkSize = 10;
 
     Mesh chunkMesh;
     public GameObject chunkObject;
@@ -20,16 +20,7 @@ public class Chunk
     // Start is called before the first frame update
     void Start()
     {
-        //chunkMap = new int[chunkSize, chunkSize, chunkSize];
-
-        //GenerateVirtualMap();
-
-        //for (int x = 0; x < 5; x++)
-        //{
-        //    ChunkCube newCube = new ChunkCube(this, new Vector3(x, 0 , 0));
-        //}
-
-        //GeneratePhysicalChunk();
+     
     }
 
     // Update is called once per frame
@@ -48,6 +39,7 @@ public class Chunk
         MakeChunk();
     }
 
+    //Initializes the block layout of the hcunk
     void MakeChunk()
     {
         chunkMap = new Blocks[World.chunkSize, World.chunkSize, World.chunkSize];
@@ -55,6 +47,7 @@ public class Chunk
         GenerateVirtualMap();
     }
 
+    //Creates the physical mesh for the chunk
     public void GeneratePhysicalChunk()
     {
         chunkMesh = new Mesh();
@@ -78,31 +71,22 @@ public class Chunk
         //mr.receiveShadows = false;
     }
 
+    //Generates the virtual layout of the chunk
     void GenerateVirtualMap()
     {
         for (int x = 0; x < World.chunkSize; x++)
             for (int y = 0; y < World.chunkSize; y++)
                 for (int z = 0; z < World.chunkSize; z++)
                 {
-                    //if (y == World.chunkSize - 1)
-                    //{
-                    //    Blocks blockToCreate = BlockDB.GetBlockName("Grass");
-                    //    chunkMap[x, y, z] = blockToCreate;
-                    //}
-                    //else
-                    //{
-                    //    Blocks blockToCreate = BlockDB.GetBlockName("Dirt");
-                    //    chunkMap[x, y, z] = blockToCreate;
-                    //}
-
-
                     int offset = 2 * World.chunkSize;
 
+                    //Calculate the world position of the block
                     int worldX = (int)(chunkObject.transform.position.x + x);
                     int worldY = (int)(chunkObject.transform.position.y + (y + offset));
                     //int worldY = (int)(chunkObject.transform.position.y + y);
                     int worldZ = (int)(chunkObject.transform.position.z + z);
 
+                    //Generates the different block layers depending on the height
                     if (worldY <= Noise.GenerateStoneHeight(worldX, worldZ))
                     {
                         Blocks stoneBlock = BlockDB.GetBlockName("Stone");
@@ -137,6 +121,7 @@ public class Chunk
         //GenerateBlocksMap();
     }
 
+    //Generates the mesh for all block that are visible
     public void GenerateBlocksMap()
     {
         for (int x = 0; x < World.chunkSize; x++)
@@ -157,9 +142,9 @@ public class Chunk
         GeneratePhysicalChunk();
     }
 
+    //Checks which faces of the block should be visible
     private bool[] GetVisibleFaces(Vector3 pos)
     {
-        // Order: front, back, top, bottom, right, left
         bool[] visibleFaces = new bool[6];
         int x = (int)pos.x;
         int y = (int)pos.y;
@@ -201,6 +186,7 @@ public class Chunk
         return false;
     }
 
+    //Checks if there is a block at the given position
     public bool CubeCheck(Vector3 position)
     {
         int x = (int)position.x;
@@ -277,46 +263,4 @@ public class Chunk
         triangles.Clear();
         UVs.Clear();
     }
-
-    //private bool IsFullySurrounded(Vector3 pos)
-    //{
-    //    // Only check for surrounding blocks if we're not at a chunk boundary
-    //    bool isEdgeBlock = pos.x == 0 || pos.x == World.chunkSize - 1 ||
-    //                      pos.y == 0 || pos.y == World.chunkSize - 1 ||
-    //                      pos.z == 0 || pos.z == World.chunkSize - 1;
-
-    //    if (isEdgeBlock)
-    //    {
-    //        // For edge blocks, we need to check if there's actually a neighboring chunk
-    //        return CubeCheck(new Vector3(pos.x, pos.y, pos.z + 1)) &&
-    //               CubeCheck(new Vector3(pos.x, pos.y, pos.z - 1)) &&
-    //               CubeCheck(new Vector3(pos.x, pos.y + 1, pos.z)) &&
-    //               CubeCheck(new Vector3(pos.x, pos.y - 1, pos.z)) &&
-    //               CubeCheck(new Vector3(pos.x + 1, pos.y, pos.z)) &&
-    //               CubeCheck(new Vector3(pos.x - 1, pos.y, pos.z));
-    //    }
-    //    else
-    //    {
-    //        // For internal blocks, we can use direct array access which is faster
-    //        int x = (int)pos.x;
-    //        int y = (int)pos.y;
-    //        int z = (int)pos.z;
-            
-    //        return !chunkMap[x, y, z + 1].isTransparent &&
-    //               !chunkMap[x, y, z - 1].isTransparent &&
-    //               !chunkMap[x, y + 1, z].isTransparent &&
-    //               !chunkMap[x, y - 1, z].isTransparent &&
-    //               !chunkMap[x + 1, y, z].isTransparent &&
-    //               !chunkMap[x - 1, y, z].isTransparent;
-    //    }
-    //}
-
-    //int ConvertIndexToLocal(int i)
-    //{
-    //    if (i == -1)
-    //        i = World.chunkSize - 1;
-    //    else if (i == World.chunkSize)
-    //        i = 0;
-    //    return i;
-    //}
 }

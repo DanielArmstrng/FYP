@@ -2,101 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//public class World : MonoBehaviour
-//{
-//    public Material terrainMaterial;
-//    public Transform player;
-//    public int viewDistance = 3;
-
-//    public static int worldSize = 3;
-//    public static int chunkSize = 10;
-//    public static int columnHeight = 10;
-
-//    public static Dictionary<Vector3, Chunk> chunkList;
-//    private Vector3 lastCheckedPosition;
-
-//    // Start is called before the first frame update
-//    void Start()
-//    {
-//        chunkList = new Dictionary<Vector3, Chunk>();
-
-//        GetComponent<BlockDB>().GenerateDB();
-
-//        for (int x = 0; x < worldSize * chunkSize; x += chunkSize)
-//            for (int z = 0; z < worldSize * chunkSize; z += chunkSize)
-//            {
-//                GenerateColumn(x, z);
-//            }
-
-//        foreach (KeyValuePair<Vector3, Chunk> chunk in chunkList)
-//        {
-//            chunk.Value.GenerateBlocksMap();
-//        }
-//    }
-
-//    // Update is called once per frame
-//    void Update()
-//    {
-
-//    }
-
-//    void GenerateChunk(Vector3 pos)
-//    {
-//        Chunk newChunk = new Chunk(pos, terrainMaterial);
-
-//        chunkList.Add(pos, newChunk);
-//    }
-
-//    void GenerateColumn(int x, int z)
-//    {
-//        for (int y = 0; y < columnHeight * chunkSize; y += chunkSize)
-//        {
-//            GenerateChunk(new Vector3(x, y, z));
-//        }
-//    }
-
-//    public static Chunk GetChunk(Vector3 pos)
-//    {
-//        float x = pos.x;
-//        float y = pos.y;
-//        float z = pos.z;
-
-//        x = Mathf.FloorToInt(x / chunkSize) * chunkSize;
-//        y = Mathf.FloorToInt(y / chunkSize) * chunkSize;
-//        z = Mathf.FloorToInt(z / chunkSize) * chunkSize;
-
-//        Vector3 chunkPos = new Vector3(x, y, z);
-
-//        Chunk foundChunk;
-
-//        if (chunkList.TryGetValue(chunkPos, out foundChunk))
-//        {
-//            return foundChunk;
-//        }
-//        else
-//        {
-//            return null;
-//        }
-//    }
-//}
-
 public class World : MonoBehaviour
 {
     public Material terrainMaterial;
     public Transform player; 
-    public int viewDistance = 3; 
+    public int viewDistance = 3; //How many chunks to load around the player
 
-    public static int worldSize = 10;
-    public static int chunkSize = 6;
-    public static int columnHeight = 20;
+    public static int worldSize = 10; 
+    public static int chunkSize = 6; //Size of the chunk in blocks
+    public static int columnHeight = 20; //Height of the column in chunks
 
     public static Dictionary<Vector3, Chunk> chunkList;
     private Vector3 lastCheckedPosition;
 
+    //Used to throttle generation to help with performance
     public float generationThrottleSeconds = 0.1f;
     private Queue<Vector3> chunksToGenerate = new Queue<Vector3>();
     public bool isGenerating = false;
 
+    //Initialise the world and begins chunk generation
     void Start()
     {
         chunkList = new Dictionary<Vector3, Chunk>();
@@ -108,6 +32,7 @@ public class World : MonoBehaviour
         UpdateChunks();
     }
 
+    //Update the world every frame updates the chunks around the player as they move
     void Update()
     {
         Vector3 playerChunkPosition = GetChunkPosition(player.position);
@@ -126,39 +51,12 @@ public class World : MonoBehaviour
         return new Vector3(x, 0, z);
     }
 
-    //void UpdateChunks()
-    //{
-    //    Vector3 playerChunkPos = GetChunkPosition(player.position);
-
-    //    for (int x = -viewDistance; x <= viewDistance; x++)
-    //        for (int z = -viewDistance; z <= viewDistance; z++)
-    //        {
-    //            Vector3 chunkPos = new Vector3(
-    //                playerChunkPos.x + (x * chunkSize),
-    //                0,
-    //                playerChunkPos.z + (z * chunkSize)
-    //            );
-
-    //            if (!chunkList.ContainsKey(chunkPos))
-    //            {
-    //                GenerateColumn((int)chunkPos.x, (int)chunkPos.z);
-
-    //                for (int y = 0; y < columnHeight * chunkSize; y += chunkSize)
-    //                {
-    //                    Vector3 columnChunkPos = new Vector3(chunkPos.x, y, chunkPos.z);
-    //                    if (chunkList.ContainsKey(columnChunkPos))
-    //                    {
-    //                        chunkList[columnChunkPos].GenerateBlocksMap();
-    //                    }
-    //                }
-    //            }
-    //        }
-    //}
-
+    //Update the chunks around the player according to the view distance
     void UpdateChunks()
     {
         Vector3 playerChunkPos = GetChunkPosition(player.position);
 
+        //Checks chunks around the player
         for (int x = -viewDistance; x <= viewDistance; x++)
             for (int z = -viewDistance; z <= viewDistance; z++)
             {
@@ -168,12 +66,14 @@ public class World : MonoBehaviour
                     playerChunkPos.z + (z * chunkSize)
                 );
 
+                //Adds the chunk to the queue if it is not already generated
                 if (!chunkList.ContainsKey(chunkPos) && !chunksToGenerate.Contains(chunkPos))
                 {
                     chunksToGenerate.Enqueue(chunkPos);
                 }
             }
 
+        //Begins generating chunks in the queue
         if (!isGenerating && chunksToGenerate.Count > 0)
         {
             StartCoroutine(GenerateChunksRoutine());
@@ -244,6 +144,7 @@ public class World : MonoBehaviour
         }
     }
 
+    //Finds the neighbouring chunk in the given direction
     public static Chunk FindNeighbour(Chunk actualChunk, string side)
     {
         Vector3 actualPos = actualChunk.chunkObject.transform.position;
@@ -276,6 +177,7 @@ public class World : MonoBehaviour
         return null;
     }
 
+    //Used to convert a world position to a block position
     public static Vector3 GetBlockPosition(Vector3 position)
     {
         int x = (int)position.x;
@@ -284,6 +186,7 @@ public class World : MonoBehaviour
 
         Chunk chunkAtPos = GetChunk(position);
 
+        //Calculate the block position relative to the chunk its in
         int blockPosX = x - (int)chunkAtPos.chunkObject.transform.position.x;
         int blockPosY = y - (int)chunkAtPos.chunkObject.transform.position.y;
         int blockPosZ = z - (int)chunkAtPos.chunkObject.transform.position.z;

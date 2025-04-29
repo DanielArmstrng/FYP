@@ -11,6 +11,7 @@ public class BlockDB : MonoBehaviour
         InitialiseBlocks();
     }
 
+    //Adds the blocks to the list and sets the default values of each block
     public static void InitialiseBlocks()
     {
         blocksList.Add(new Blocks());

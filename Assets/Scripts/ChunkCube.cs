@@ -27,7 +27,7 @@ public class ChunkCube
         this.position = position;
         this.block = blockType;
 
-        // Order: front, back, top, bottom, right, left
+        //Create visible faces in the order front, back, top, bottom, right, left
         for (int i = 0; i < visibleFaces.Length; i++)
         {
             if (visibleFaces[i])
@@ -49,7 +49,7 @@ public class ChunkCube
 
     void CreateCubeSide(Chunk owner, Vector3 position, Blocks blockType, CubeSide side)
     {
-        // Add triangles based on side
+        // Add triangles based on side in the correct winding order
         if (side == CubeSide.Back || side == CubeSide.Bottom || side == CubeSide.Left)
         {
             owner.triangles.Add(0 + owner.vertices.Count);

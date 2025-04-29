@@ -29,6 +29,7 @@ public class Blocks
         
     }
 
+    //Normal block
     public Blocks(string name, bool isSolid, bool isTransparent, bool isBreakable, Vector2 texture)
     {
         this.name = name;
@@ -38,6 +39,7 @@ public class Blocks
         this.texture = texture;
     }
 
+    //Multi texture block
     public Blocks(string name, bool isSolid, bool isTransparent, bool isBreakable, Vector2 textureUp, Vector2 textureDown, Vector2 textureSide)
     {
         this.name = name;
