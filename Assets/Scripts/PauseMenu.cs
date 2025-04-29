@@ -72,14 +72,9 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    public void MainMenu()
+    public void Quit()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenuScene");
-        isPaused = false;
-        
-        // Make sure cursor is visible when returning to main menu
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        Debug.Log("QUIT");
+        Application.Quit();
     }
 }
