@@ -14,10 +14,10 @@ public class BlockDB : MonoBehaviour
     public static void InitialiseBlocks()
     {
         blocksList.Add(new Blocks());
-        blocksList.Add(new Blocks("Dirt", true, false, true,  new Vector2(0, 0)));
-        blocksList.Add(new Blocks("Grass", true, false, true,  new Vector2(1, 0), new Vector2(0, 0), new Vector2(1, 1)));
+        blocksList.Add(new Blocks("Dirt", true, false, true,  new Vector2(2, 1)));
+        blocksList.Add(new Blocks("Grass", true, false, true,  new Vector2(1, 0), new Vector2(3, 1), new Vector2(0, 0)));
         blocksList.Add(new Blocks("Stone", true, false, true,  new Vector2(0, 1)));
-        blocksList.Add(new Blocks("Bedrock", true, false, false, new Vector2(1, 0)));
+        blocksList.Add(new Blocks("Bedrock", true, false, false, new Vector2(1, 1)));
     }
 
     // Update is called once per frame

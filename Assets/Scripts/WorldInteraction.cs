@@ -55,43 +55,84 @@ public class WorldInteraction : MonoBehaviour
 
     void Interaction(RaycastHit hit, Vector3 hitPosition, Vector3 placePosition)
     {
-        if(Input.GetMouseButtonDown(0)) //Destroy blocks
+        if(!PauseMenu.isPaused)
         {
-            Vector3 chunkBlockPosition = hitPosition - hit.collider.gameObject.transform.position;
-            
-            Chunk chunkAtPosition = World.GetChunk(hit.collider.transform.position);
-            
-            // Get the block at the hit position
-            Blocks blockAtPosition = chunkAtPosition.chunkMap[(int)chunkBlockPosition.x, (int)chunkBlockPosition.y, (int)chunkBlockPosition.z];
-            
-            // Only destroy the block if it's breakable
-            if (blockAtPosition.isBreakable)
+            if (Input.GetMouseButtonDown(0)) //Destroy blocks
             {
-                ClearChunk(chunkAtPosition);
+                Vector3 chunkBlockPosition = hitPosition - hit.collider.gameObject.transform.position;
 
-                chunkAtPosition.chunkMap[(int)chunkBlockPosition.x, (int)chunkBlockPosition.y, (int)chunkBlockPosition.z] = BlockDB.GetBlockName("Air");
-            
-                chunkAtPosition.GenerateBlocksMap();
+                Chunk chunkAtPosition = World.GetChunk(hit.collider.transform.position);
 
-                UpdateNeighbours(chunkBlockPosition, chunkAtPosition);
+                // Get the block at the hit position
+                Blocks blockAtPosition = chunkAtPosition.chunkMap[(int)chunkBlockPosition.x, (int)chunkBlockPosition.y, (int)chunkBlockPosition.z];
+
+                // Only destroy the block if it's breakable
+                if (blockAtPosition.isBreakable)
+                {
+                    ClearChunk(chunkAtPosition);
+
+                    chunkAtPosition.chunkMap[(int)chunkBlockPosition.x, (int)chunkBlockPosition.y, (int)chunkBlockPosition.z] = BlockDB.GetBlockName("Air");
+
+                    chunkAtPosition.GenerateBlocksMap();
+
+                    UpdateNeighbours(chunkBlockPosition, chunkAtPosition);
+                }
+            }
+
+            if (Input.GetMouseButtonDown(1)) //Place blocks
+            {
+                if (placePosition != playerHeadPos && placePosition != playerBodyPos)
+                {
+                    Chunk chunkAtPos = World.GetChunk(placePosition);
+
+                    ClearChunk(chunkAtPos);
+
+                    Vector3 pos = World.GetBlockPosition(placePosition);
+                    chunkAtPos.chunkMap[(int)pos.x, (int)pos.y, (int)pos.z] = BlockDB.GetBlockName("Stone");
+                    chunkAtPos.GenerateBlocksMap();
+
+                    UpdateNeighbours(pos, chunkAtPos);
+                }
             }
         }
+       
+        //if(Input.GetMouseButtonDown(0)) //Destroy blocks
+        //{
+        //    Vector3 chunkBlockPosition = hitPosition - hit.collider.gameObject.transform.position;
+            
+        //    Chunk chunkAtPosition = World.GetChunk(hit.collider.transform.position);
+            
+        //    // Get the block at the hit position
+        //    Blocks blockAtPosition = chunkAtPosition.chunkMap[(int)chunkBlockPosition.x, (int)chunkBlockPosition.y, (int)chunkBlockPosition.z];
+            
+        //    // Only destroy the block if it's breakable
+        //    if (blockAtPosition.isBreakable)
+        //    {
+        //        ClearChunk(chunkAtPosition);
 
-        if (Input.GetMouseButtonDown(1)) //Place blocks
-        {
-            if (placePosition != playerHeadPos && placePosition != playerBodyPos)
-            {
-                Chunk chunkAtPos = World.GetChunk(placePosition);
+        //        chunkAtPosition.chunkMap[(int)chunkBlockPosition.x, (int)chunkBlockPosition.y, (int)chunkBlockPosition.z] = BlockDB.GetBlockName("Air");
+            
+        //        chunkAtPosition.GenerateBlocksMap();
 
-                ClearChunk(chunkAtPos);
+        //        UpdateNeighbours(chunkBlockPosition, chunkAtPosition);
+        //    }
+        //}
 
-                Vector3 pos = World.GetBlockPosition(placePosition);
-                chunkAtPos.chunkMap[(int)pos.x, (int)pos.y, (int)pos.z] = BlockDB.GetBlockName("Stone");
-                chunkAtPos.GenerateBlocksMap();
+        //if (Input.GetMouseButtonDown(1)) //Place blocks
+        //{
+        //    if (placePosition != playerHeadPos && placePosition != playerBodyPos)
+        //    {
+        //        Chunk chunkAtPos = World.GetChunk(placePosition);
 
-                UpdateNeighbours(pos, chunkAtPos);
-            }
-        }
+        //        ClearChunk(chunkAtPos);
+
+        //        Vector3 pos = World.GetBlockPosition(placePosition);
+        //        chunkAtPos.chunkMap[(int)pos.x, (int)pos.y, (int)pos.z] = BlockDB.GetBlockName("Stone");
+        //        chunkAtPos.GenerateBlocksMap();
+
+        //        UpdateNeighbours(pos, chunkAtPos);
+        //    }
+        //}
     }
 
     void ClearChunk(Chunk chunk)

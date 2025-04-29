@@ -149,7 +149,7 @@ public class ChunkCube
         owner.vertices.Add(v2 + position);
         owner.vertices.Add(v3 + position);
 
-        float textureOffset = 1f / 2f;
+        float textureOffset = 1f / 3f;
         Vector2 texturePos;
 
         if(block.multiTexture)
