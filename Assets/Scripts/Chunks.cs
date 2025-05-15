@@ -9,6 +9,7 @@ public class Chunk
     //3D array stores all blocks in the chunk
     public Blocks[,,] chunkMap;
 
+    //List of vertices, triangles and UVs for the mesh
     public List<Vector3> vertices = new List<Vector3>();
     public List<int> triangles = new List<int>();
     public List<Vector2> UVs = new List<Vector2>();
@@ -29,6 +30,7 @@ public class Chunk
         
     }
 
+    //Constructor for the chunk
     public Chunk(Vector3 position, Material material)
     {
         chunkObject = new GameObject("Chunk");
@@ -121,7 +123,7 @@ public class Chunk
         //GenerateBlocksMap();
     }
 
-    //Generates the mesh for all block that are visible
+    //Generates the blocks in the chunk that are visible
     public void GenerateBlocksMap()
     {
         for (int x = 0; x < World.chunkSize; x++)
@@ -233,6 +235,7 @@ public class Chunk
             }
 
             Chunk neighbourChunk = World.GetChunk(neighborPos);
+
 
             if (neighbourChunk != null)
             {

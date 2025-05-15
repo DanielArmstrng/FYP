@@ -152,6 +152,7 @@ public class ChunkCube
         float textureOffset = 1f / 3f;
         Vector2 texturePos;
 
+        //Calculates the texture coordinates based on the block type and side
         if(block.multiTexture)
         {
             if (side == CubeSide.Top)
@@ -166,6 +167,7 @@ public class ChunkCube
             texturePos = block.texture;
         }
 
+        //Calculates the texture coordinates based on the texture position
         owner.UVs.Add(new Vector2((textureOffset * texturePos.x) + textureOffset, textureOffset * texturePos.y));
         owner.UVs.Add(new Vector2((textureOffset * texturePos.x) + textureOffset, (textureOffset * texturePos.y) + textureOffset));
         owner.UVs.Add(new Vector2(textureOffset * texturePos.x, (textureOffset * texturePos.y) + textureOffset));

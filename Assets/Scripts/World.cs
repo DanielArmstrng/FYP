@@ -60,11 +60,7 @@ public class World : MonoBehaviour
         for (int x = -viewDistance; x <= viewDistance; x++)
             for (int z = -viewDistance; z <= viewDistance; z++)
             {
-                Vector3 chunkPos = new Vector3(
-                    playerChunkPos.x + (x * chunkSize),
-                    0,
-                    playerChunkPos.z + (z * chunkSize)
-                );
+                Vector3 chunkPos = new Vector3(playerChunkPos.x + (x * chunkSize), 0, playerChunkPos.z + (z * chunkSize));
 
                 //Adds the chunk to the queue if it is not already generated
                 if (!chunkList.ContainsKey(chunkPos) && !chunksToGenerate.Contains(chunkPos))
@@ -80,6 +76,7 @@ public class World : MonoBehaviour
         }
     }
 
+    //Generates the chunks in the queue
     IEnumerator GenerateChunksRoutine()
     {
         isGenerating = true;
@@ -88,7 +85,7 @@ public class World : MonoBehaviour
         {
             Vector3 chunkPos = chunksToGenerate.Dequeue();
 
-            GenerateColumn((int)chunkPos.x, (int)chunkPos.z);
+            GenerateColumn((int)chunkPos.x, (int)chunkPos.z); 
        
             for (int y = 0; y < columnHeight * chunkSize; y += chunkSize)
             {
@@ -105,6 +102,7 @@ public class World : MonoBehaviour
         isGenerating = false;
     }
 
+    //Generates a chunk at the given position
     void GenerateChunk(Vector3 pos)
     {
         Chunk newChunk = new Chunk(pos, terrainMaterial);
@@ -112,6 +110,7 @@ public class World : MonoBehaviour
         chunkList.Add(pos, newChunk);
     }
 
+    //Generates a column of chunks at the given position
     void GenerateColumn(int x, int z)
     {
         for (int y = 0; y < columnHeight * chunkSize; y += chunkSize)
@@ -120,13 +119,14 @@ public class World : MonoBehaviour
         }
     }
 
+    //Finds the chunk at the given position
     public static Chunk GetChunk(Vector3 pos)
     {
         float x = pos.x;
         float y = pos.y;
         float z = pos.z;
 
-        x = Mathf.FloorToInt(x / chunkSize) * chunkSize;
+        x = Mathf.FloorToInt(x / chunkSize) * chunkSize; 
         y = Mathf.FloorToInt(y / chunkSize) * chunkSize;
         z = Mathf.FloorToInt(z / chunkSize) * chunkSize;
 
